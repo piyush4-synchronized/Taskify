@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+venv/
+.vscode/
+
+# Local databases
+taskify.db
+*.sqlite3

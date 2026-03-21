@@ -1,0 +1,612 @@
+/* ═══════════════════════════════════════════════════════════════
+   TASKIFY — Hand-Drawn Design System
+   A playful, sketchy, paper-textured UI built from scratch.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── CSS Variables (Design Tokens) ────────────────────────────── */
+:root {
+    /* Colors */
+    --bg:          #fdfbf7;
+    --fg:          #2d2d2d;
+    --muted:       #e5e0d8;
+    --accent:      #ff4d4d;
+    --accent-hover:#e03e3e;
+    --border:      #2d2d2d;
+    --secondary:   #2d5da1;
+    --card-bg:     #ffffff;
+    --postit:      #fff9c4;
+    --success:     #4caf50;
+
+    /* Shadows */
+    --shadow:         4px 4px 0px 0px var(--border);
+    --shadow-hover:   2px 2px 0px 0px var(--border);
+    --shadow-active:  0px 0px 0px 0px var(--border);
+    --shadow-big:     8px 8px 0px 0px var(--border);
+    --shadow-subtle:  3px 3px 0px 0px rgba(45, 45, 45, 0.1);
+
+    /* Typography */
+    --font-heading: 'Kalam', cursive;
+    --font-body:    'Patrick Hand', cursive;
+
+    /* Borders */
+    --wobbly:   255px 15px 225px 15px / 15px 225px 15px 255px;
+    --wobbly-2: 15px 255px 15px 225px / 225px 15px 255px 15px;
+}
+
+/* ── Dark Mode Tokens ─────────────────────────────────────────── */
+body.dark {
+    --bg:          #1a1a2e;
+    --fg:          #e0d8c8;
+    --muted:       #2a2a40;
+    --accent:      #ff6b6b;
+    --accent-hover:#ff5252;
+    --border:      #e0d8c8;
+    --card-bg:     #252545;
+    --postit:      #3d3a20;
+    --secondary:   #5b9bd5;
+    --shadow:         4px 4px 0px 0px rgba(224, 216, 200, 0.4);
+    --shadow-hover:   2px 2px 0px 0px rgba(224, 216, 200, 0.4);
+    --shadow-active:  0px 0px 0px 0px transparent;
+    --shadow-big:     8px 8px 0px 0px rgba(224, 216, 200, 0.3);
+    --shadow-subtle:  3px 3px 0px 0px rgba(224, 216, 200, 0.08);
+}
+
+/* ── Reset & Base ─────────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 18px;
+    color: var(--fg);
+    background-color: var(--bg);
+    /* Paper dot texture */
+    background-image: radial-gradient(var(--muted) 1px, transparent 1px);
+    background-size: 24px 24px;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+a {
+    color: var(--secondary);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 2px dashed var(--secondary);
+    transition: color 0.15s;
+}
+a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BUTTONS
+   ══════════════════════════════════════════════════════════════ */
+.btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    padding: 10px 24px;
+    background: var(--card-bg);
+    color: var(--fg);
+    border: 3px solid var(--border);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.1s ease;
+    text-decoration: none;
+    line-height: 1.4;
+}
+.btn:hover {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: var(--shadow-hover);
+    transform: translate(2px, 2px);
+}
+.btn:active {
+    box-shadow: var(--shadow-active);
+    transform: translate(4px, 4px);
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+}
+.btn-primary:hover {
+    background: var(--accent-hover);
+}
+
+.btn-secondary {
+    background: var(--muted);
+}
+.btn-secondary:hover {
+    background: var(--secondary);
+    color: #fff;
+}
+
+.btn-icon {
+    padding: 8px 14px;
+    font-size: 1.3rem;
+    line-height: 1;
+}
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 0.95rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FORM ELEMENTS
+   ══════════════════════════════════════════════════════════════ */
+label {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 4px;
+    display: block;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    padding: 10px 14px;
+    background: var(--card-bg);
+    color: var(--fg);
+    border: 2px solid var(--border);
+    box-shadow: var(--shadow-subtle);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+input::placeholder {
+    color: rgba(45, 45, 45, 0.35);
+}
+body.dark input::placeholder {
+    color: rgba(224, 216, 200, 0.35);
+}
+input:focus, select:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(45, 93, 161, 0.15);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.form-group--grow {
+    flex: 1;
+}
+.form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.form-row > .form-group {
+    min-width: 140px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DECORATIONS — tape, tack, circles
+   ══════════════════════════════════════════════════════════════ */
+.tape {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 100px;
+    height: 28px;
+    background: rgba(200, 200, 180, 0.55);
+    border: 1px solid rgba(180, 175, 160, 0.4);
+    z-index: 2;
+}
+.tack {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    box-shadow: 1px 1px 0 var(--border);
+    z-index: 2;
+}
+
+.deco-circle {
+    position: fixed;
+    width: 160px;
+    height: 160px;
+    border: 3px dashed var(--muted);
+    border-radius: 50%;
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+}
+.deco-circle--top-right {
+    top: 40px;
+    right: -40px;
+}
+.deco-circle--bottom-left {
+    bottom: 40px;
+    left: -40px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   AUTH PAGES (login / register)
+   ══════════════════════════════════════════════════════════════ */
+.auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.auth-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 3px solid var(--border);
+    box-shadow: var(--shadow-big);
+    padding: 3rem 2.5rem 2.5rem;
+    max-width: 420px;
+    width: 100%;
+}
+
+.auth-title {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    margin-bottom: 0.25rem;
+}
+.auth-subtitle {
+    font-size: 1.1rem;
+    color: var(--fg);
+    opacity: 0.6;
+    margin-bottom: 1.5rem;
+}
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+.auth-card .btn {
+    margin-top: 0.5rem;
+    width: 100%;
+    text-align: center;
+}
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+}
+
+.error-msg {
+    background: #ffe0e0;
+    color: #b71c1c;
+    border: 2px solid #ff4d4d;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    border-radius: 4px;
+}
+.success-msg {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #4caf50;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   APP HEADER
+   ══════════════════════════════════════════════════════════════ */
+.app-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 4rem;
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px dashed var(--muted);
+}
+.logo {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    font-weight: 700;
+    transform: rotate(-1deg);
+}
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.greeting {
+    font-size: 1.05rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ADD TASK CARD
+   ══════════════════════════════════════════════════════════════ */
+.add-task-section {
+    margin-bottom: 2rem;
+}
+.add-task-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 3px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 2.5rem 2rem 2rem;
+}
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+    transform: rotate(-0.5deg);
+}
+.add-task-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FILTERS
+   ══════════════════════════════════════════════════════════════ */
+.filters-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 2px dashed var(--muted);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.3);
+}
+body.dark .filters-section {
+    background: rgba(255,255,255,0.03);
+}
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+.filter-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    margin-right: 2px;
+}
+.filter-group--search {
+    flex: 1;
+    min-width: 180px;
+}
+.filter-group--search input {
+    flex: 1;
+    padding: 6px 12px;
+    font-size: 0.95rem;
+}
+.filter-btn {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    padding: 5px 12px;
+    background: var(--card-bg);
+    color: var(--fg);
+    border: 2px solid var(--border);
+    box-shadow: 2px 2px 0px 0px var(--border);
+    cursor: pointer;
+    transition: all 0.1s;
+}
+.filter-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px 0px var(--border);
+}
+.filter-btn.active {
+    background: var(--secondary);
+    color: #fff;
+    box-shadow: 1px 1px 0px 0px var(--border);
+    transform: translate(1px, 1px);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TASK CARDS
+   ══════════════════════════════════════════════════════════════ */
+.tasks-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+}
+@media (min-width: 640px) {
+    .tasks-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.task-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 1.5rem 1.25rem 1.25rem;
+    transition: transform 0.1s, box-shadow 0.1s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.task-card:hover {
+    transform: rotate(-0.5deg) translate(-1px, -1px);
+    box-shadow: 6px 6px 0px 0px var(--border);
+}
+.task-card.completed {
+    opacity: 0.6;
+}
+.task-card.completed .task-title {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+}
+.task-card.overdue {
+    border-color: var(--accent);
+    border-width: 3px;
+}
+.task-card.due-soon {
+    border-color: #ff9800;
+    border-width: 3px;
+}
+
+.task-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+.task-checkbox {
+    margin-top: 5px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+}
+.task-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    flex: 1;
+    word-break: break-word;
+}
+.task-desc {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin-left: 30px;
+}
+.task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-left: 30px;
+    margin-top: 0.25rem;
+}
+.tag {
+    font-size: 0.8rem;
+    padding: 2px 10px;
+    border: 2px solid var(--border);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    background: var(--muted);
+    white-space: nowrap;
+}
+.tag--priority-High { background: #ffcdd2; border-color: #e53935; }
+.tag--priority-Medium { background: #fff9c4; border-color: #f9a825; }
+.tag--priority-Low { background: #c8e6c9; border-color: #43a047; }
+.tag--category {
+    background: var(--postit);
+}
+.tag--due {
+    background: var(--card-bg);
+    font-style: italic;
+}
+.tag--overdue {
+    background: #ffcdd2;
+    color: #b71c1c;
+    font-weight: 700;
+    border-color: #e53935;
+    animation: jiggle 0.4s ease-in-out infinite alternate;
+}
+.tag--due-soon {
+    background: #fff3e0;
+    color: #e65100;
+    font-weight: 700;
+    border-color: #ff9800;
+}
+
+.task-actions {
+    display: flex;
+    gap: 0.4rem;
+    margin-left: 30px;
+    margin-top: 0.25rem;
+}
+.task-actions .btn-sm {
+    font-size: 0.85rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EMPTY STATE
+   ══════════════════════════════════════════════════════════════ */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    opacity: 0.6;
+}
+.empty-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EDIT MODAL
+   ══════════════════════════════════════════════════════════════ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(45, 45, 45, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 1.5rem;
+}
+.modal-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 3px solid var(--border);
+    box-shadow: var(--shadow-big);
+    padding: 2.5rem 2rem 2rem;
+    max-width: 520px;
+    width: 100%;
+}
+.modal-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ══════════════════════════════════════════════════════════════ */
+@keyframes jiggle {
+    0%   { transform: rotate(-1deg); }
+    100% { transform: rotate(1deg); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.task-card {
+    animation: fadeIn 0.25s ease forwards;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    body { font-size: 16px; }
+    .logo { font-size: 1.8rem; }
+    .app-wrapper { padding: 1rem 1rem 3rem; }
+    .auth-card { padding: 2.5rem 1.5rem 2rem; }
+    .add-task-card { padding: 2rem 1.25rem 1.5rem; }
+    .form-row { flex-direction: column; }
+    .task-title { font-size: 1.1rem; }
+    .header-right { flex-wrap: wrap; }
+    .deco-circle { display: none; }
+}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Register — Taskify{% endblock %}
+
+{% block body %}
+<div class="auth-page">
+    <!-- Decorative scribbles -->
+    <div class="deco-circle deco-circle--top-right"></div>
+    <div class="deco-circle deco-circle--bottom-left"></div>
+
+    <div class="auth-card" style="border-radius: 15px 255px 15px 225px / 225px 15px 255px 15px;">
+        <!-- Tack decoration -->
+        <div class="tack"></div>
+
+        <h1 class="auth-title">Join Taskify! 🎒</h1>
+        <p class="auth-subtitle">Create your personal notebook</p>
+
+        <div id="auth-error" class="error-msg" style="display:none;"></div>
+        <div id="auth-success" class="success-msg" style="display:none;"></div>
+
+        <form id="register-form" autocomplete="off">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="pick-a-cool-name" required
+                       style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required
+                       style="border-radius: 15px 255px 15px 225px / 225px 15px 255px 15px;">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="min 6 characters" required
+                       style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
+            </div>
+            <button type="submit" class="btn btn-primary"
+                    style="border-radius: 15px 255px 15px 225px / 225px 15px 255px 15px;">
+                Sign Up ✨
+            </button>
+        </form>
+
+        <p class="auth-footer">
+            Already have an account? <a href="/login">Log in here!</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById('auth-error');
+    const successEl = document.getElementById('auth-success');
+    errorEl.style.display = 'none';
+    successEl.style.display = 'none';
+
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    try {
+        const res = await fetch('/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            successEl.textContent = 'Account created! Redirecting to login...';
+            successEl.style.display = 'block';
+            setTimeout(() => { window.location.href = '/login'; }, 1500);
+        } else {
+            errorEl.textContent = data.error || 'Registration failed.';
+            errorEl.style.display = 'block';
+        }
+    } catch (err) {
+        errorEl.textContent = 'Network error. Please try again.';
+        errorEl.style.display = 'block';
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Taskify{% endblock %}</title>
+    <meta name="description" content="Taskify — a hand-drawn, playful to-do list app to boost your productivity.">
+
+    <!-- Google Fonts: Kalam (headings) + Patrick Hand (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+
+    <!-- Custom Footer -->
+    <footer style="text-align: center; padding: 2rem 1rem; margin-top: 2rem; border-top: 2px dashed rgba(0,0,0,0.1); font-family: 'Patrick Hand', cursive; color: #555; font-size: 1.1rem;">
+        <p>Made by GITA Autonomous college student of CSE(AIML)</p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+    
+    <!-- Initialize any Lucide icons -->
+    <script>
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    </script>
+</body>
+</html>
