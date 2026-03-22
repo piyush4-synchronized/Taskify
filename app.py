@@ -92,20 +92,20 @@ def register():
 
     hashed = generate_password_hash(password)
 
-    try:
-        conn = get_db()
-        conn.execute(
-            "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-            (username, email, hashed),
-        )
-        conn.commit()
-        conn.close()
-        return jsonify({"message": "Registration successful!"}), 201
-    except Exception as e:
-        error_msg = str(e).upper()
-        if "UNIQUE" in error_msg:
-            return jsonify({"error": "Username or email already exists."}), 409
-        return jsonify({"error": "Registration failed."}), 500
+    # try:
+    conn = get_db()
+    conn.execute(
+        "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+        (username, email, hashed),
+    )
+    conn.commit()
+    conn.close()
+    return jsonify({"message": "Registration successful!"}), 201
+    # except Exception as e:
+    #     error_msg = str(e).upper()
+    #     if "UNIQUE" in error_msg:
+    #         return jsonify({"error": "Username or email already exists."}), 409
+    #     return jsonify({"error": "Registration failed."}), 500
 
 
 @app.route("/login", methods=["POST"])
@@ -288,4 +288,4 @@ def setup_database():
 
 if __name__ == "__main__":
     init_db()
-    app.run(debug=True, port=5000)
+    app.run(debug=True)
