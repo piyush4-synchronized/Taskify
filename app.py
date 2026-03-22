@@ -8,8 +8,14 @@ from datetime import datetime
 from functools import wraps
 
 from flask import (
-    Flask, render_template, request, redirect,
-    url_for, session, jsonify, flash
+    Flask,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    session,
+    jsonify,
+    flash,
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
@@ -22,20 +28,24 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "fallback-secret-key")
 
+
 # ── Helper: Login Required Decorator ──────────────────────────────
 def login_required(f):
     """Decorator to protect routes that need authentication."""
+
     @wraps(f)
     def decorated(*args, **kwargs):
         if "user_id" not in session:
             return redirect(url_for("login"))
         return f(*args, **kwargs)
+
     return decorated
 
 
 # ══════════════════════════════════════════════════════════════════
 #  PAGE ROUTES
 # ══════════════════════════════════════════════════════════════════
+
 
 @app.route("/")
 @login_required
@@ -64,6 +74,7 @@ def register_page():
 #  AUTHENTICATION API
 # ══════════════════════════════════════════════════════════════════
 
+
 @app.route("/register", methods=["POST"])
 def register():
     """Register a new user account."""
@@ -85,7 +96,7 @@ def register():
         conn = get_db()
         conn.execute(
             "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-            (username, email, hashed)
+            (username, email, hashed),
         )
         conn.commit()
         conn.close()
@@ -135,6 +146,7 @@ def logout():
 #  TASK CRUD API
 # ══════════════════════════════════════════════════════════════════
 
+
 @app.route("/api/tasks", methods=["GET"])
 @login_required
 def get_tasks():
@@ -143,8 +155,7 @@ def get_tasks():
     try:
         conn = get_db()
         cursor = conn.execute(
-            "SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC",
-            (user_id,)
+            "SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC", (user_id,)
         )
         rows = cursor.fetchall()
         conn.close()
@@ -182,7 +193,7 @@ def add_task():
         cursor = conn.execute(
             """INSERT INTO tasks (user_id, title, description, priority, category, due_date)
                VALUES (?, ?, ?, ?, ?, ?)""",
-            (user_id, title, description, priority, category, due_date)
+            (user_id, title, description, priority, category, due_date),
         )
         conn.commit()
         task_id = cursor.lastrowid
@@ -216,7 +227,16 @@ def update_task(task_id):
                SET title=?, description=?, priority=?, category=?,
                    due_date=?, status=?
                WHERE id=? AND user_id=?""",
-            (title, description, priority, category, due_date, int(status), task_id, user_id)
+            (
+                title,
+                description,
+                priority,
+                category,
+                due_date,
+                int(status),
+                task_id,
+                user_id,
+            ),
         )
         conn.commit()
         affected = cursor.rowcount
@@ -237,8 +257,7 @@ def delete_task(task_id):
     try:
         conn = get_db()
         cursor = conn.execute(
-            "DELETE FROM tasks WHERE id=? AND user_id=?",
-            (task_id, user_id)
+            "DELETE FROM tasks WHERE id=? AND user_id=?", (task_id, user_id)
         )
         conn.commit()
         affected = cursor.rowcount
@@ -249,6 +268,18 @@ def delete_task(task_id):
         return jsonify({"message": "Task deleted!"}), 200
     except Exception as e:
         return jsonify({"error": "Could not delete task."}), 500
+
+
+# TEMPORARY ROUTE TO INITIALIZE CLOUD DATABASE
+@app.route("/setup-db-secret-123")
+def setup_database():
+    try:
+        from db import init_db
+
+        init_db()
+        return "✅ Database tables created successfully!"
+    except Exception as e:
+        return f"❌ Error creating database: {str(e)}"
 
 
 # ══════════════════════════════════════════════════════════════════
