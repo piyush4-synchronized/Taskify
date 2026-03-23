@@ -6,5 +6,5 @@ venv/
 .vscode/
 
 # Local databases
-taskify.db
-*.sqlite3
+*.db
+*.sqlite
